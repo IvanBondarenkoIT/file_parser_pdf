@@ -1,3 +1,4 @@
+import data_manager as dm
 import pandas as pd
 import tabula
 import re
@@ -17,15 +18,14 @@ def read_pdf(filename: str):
     all_matches = re.findall(all_regex,
                              text_content, re.IGNORECASE)
     return all_matches
-    # for match in all_matches:
-    #     print(match)
 
 
 def main():
     # read_pdf("data_pdf.pdf")
-
-    df = pd.DataFrame(read_pdf("data_pdf.pdf"))
-    df.to_csv("result_csv_file.csv")
+    data_interpreter = dm.DataInterpreter()
+    data_interpreter.add_data(read_pdf("data_pdf.pdf"))
+    df = pd.DataFrame(data_interpreter.get_final_values())
+    df.to_csv("result_csv_file.csv", index=False, header=False)
 
 
 if __name__ == '__main__':
