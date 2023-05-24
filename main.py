@@ -1,3 +1,4 @@
+import pandas as pd
 import tabula
 import re
 
@@ -15,13 +16,16 @@ def read_pdf(filename: str):
                 r"(\rname|Unnamed: 0)"
     all_matches = re.findall(all_regex,
                              text_content, re.IGNORECASE)
-
-    for match in all_matches:
-        print(match)
+    return all_matches
+    # for match in all_matches:
+    #     print(match)
 
 
 def main():
-    read_pdf("data_pdf.pdf")
+    # read_pdf("data_pdf.pdf")
+
+    df = pd.DataFrame(read_pdf("data_pdf.pdf"))
+    df.to_csv("result_csv_file.csv")
 
 
 if __name__ == '__main__':
