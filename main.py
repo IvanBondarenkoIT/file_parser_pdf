@@ -1,7 +1,12 @@
 import data_manager as dm
-import pandas as pd
+import pandas
 import tabula
 import re
+
+
+CSV_FILE_PATH = 'result_csv_file.csv'
+NO_VALID_FILE_PATH = "not_valid_data.csv"
+PDF_FILE_PATH = 'data_pdf.pdf'
 
 
 def read_pdf(filename: str):
@@ -15,17 +20,21 @@ def read_pdf(filename: str):
                 r"\rtel(.+?)" \
                 r"\remail(.+?)" \
                 r"(\rname|Unnamed: 0)"
-    all_matches = re.findall(all_regex,
-                             text_content, re.IGNORECASE)
+
+    all_matches = re.findall(all_regex, text_content, re.IGNORECASE)
+
     return all_matches
 
 
 def main():
-    # read_pdf("data_pdf.pdf")
     data_interpreter = dm.DataInterpreter()
-    data_interpreter.add_data(read_pdf("data_pdf.pdf"))
-    df = pd.DataFrame(data_interpreter.get_final_values())
-    df.to_csv("result_csv_file.csv", index=False, header=False)
+    data_interpreter.add_data(read_pdf(PDF_FILE_PATH))
+
+    df = pandas.DataFrame(data_interpreter.get_final_values)
+    df.to_csv(CSV_FILE_PATH, index=False, header=False)
+
+    df = pandas.DataFrame(data_interpreter.get_not_valid_data)
+    df.to_csv(NO_VALID_FILE_PATH, index=False, header=False)
 
 
 if __name__ == '__main__':
